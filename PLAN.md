@@ -50,16 +50,20 @@ No implementation required this day (per spec) — notes only.
 
 ---
 
-## Day 3 — DPO ⬜ Not started
+## Day 3 — DPO ✅ Complete
 
-- [ ] Documentation pass: background knowledge + implementation plan +
-      relevant papers (before any code)
-- [ ] `notes/papers/dpo.md` using the structure: Problem / Existing approach
-      / Main contribution / How training works / Inputs required / Why it
-      is cheaper than PPO / Limitations / Relation to this project / Open
-      questions
+Day 3's only deliverable per spec *is* documentation — no separate code step.
 
-**Files created:** _(none yet)_
+- [x] `notes/papers/dpo.md` using the required structure (Problem / Existing
+      approach / Main contribution / How training works / Inputs required /
+      Why it is cheaper than PPO / Limitations / Relation to this project /
+      Open questions), plus a papers table. Covers the reward
+      reparameterization trick, the closed-form DPO loss derivation, how it
+      maps onto `policy_gradient.md`/`ppo.md`, and the Day 6 plan for
+      building a synthetic GSM8K preference dataset.
+
+**Files created:**
+- [x] `notes/papers/dpo.md`
 
 ---
 
@@ -118,7 +122,7 @@ No implementation required this day (per spec) — notes only.
 - [ ] GSM8K loads correctly
 - [ ] Automatic answer extraction works
 - [ ] Binary correctness reward works
-- [ ] DPO concepts are documented
+- [x] DPO concepts are documented
 - [x] PPO concepts are documented
 - [ ] GRPO concepts are documented
 - [ ] Tiny DPO training reaches at least one optimization step
@@ -142,3 +146,4 @@ No implementation required this day (per spec) — notes only.
 | 2 | `notes/policy_gradient.md` | ✅ created |
 | 2 | `notes/ppo.md` | ✅ created |
 | 2 | `PLAN.md` (this file) | ✅ created |
+| 3 | `notes/papers/dpo.md` | ✅ created |
