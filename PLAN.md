@@ -84,17 +84,23 @@ Day 4's only deliverable per spec *is* documentation — no separate code step.
 
 ---
 
-## Day 5 — Build Evaluation Pipeline ⬜ Not started
+## Day 5 — Build Evaluation Pipeline 🟡 In progress (doc done, code not started)
 
-- [ ] Documentation pass: background knowledge + implementation plan +
-      relevant papers (before any code)
+- [x] Documentation pass: `notes/evaluation_pipeline.md` — GSM8K format
+      background (incl. the `#### N` marker and `<<...>>` calculator
+      annotations), the "one `extract_answer` for both ground truth and
+      model output" design decision, numeric-normalization and
+      float-equality comparison rules, a file-by-file implementation plan
+      with draft code and an 8-case test table, and a references section
+      (GSM8K paper, HF `transformers`/`datasets` docs)
 - [ ] `scripts/test_model.py` — load Qwen, send a prompt, print generation
 - [ ] `scripts/test_dataset.py` — load GSM8K, print 10 sample Q/A pairs
 - [ ] `src/evaluation/answer_extraction.py` — `extract_answer(text) -> str | None`
 - [ ] Unit tests for answer extraction
 - [ ] `src/rewards/correctness.py` — deterministic binary reward
 
-**Files created:** _(none yet)_
+**Files created:**
+- [x] `notes/evaluation_pipeline.md`
 
 ---
 
@@ -154,3 +160,4 @@ Day 4's only deliverable per spec *is* documentation — no separate code step.
 | 3 | `notes/papers/dpo.md` | ✅ created |
 | 3 | `README.md` | ✅ updated (progress status, notes links) |
 | 4 | `notes/papers/grpo.md` | ✅ created |
+| 5 | `notes/evaluation_pipeline.md` | ✅ created (doc only — Day 5 code not started) |
