@@ -7,7 +7,12 @@ language model, using GSM8K-style reasoning tasks as the test bed.
 This is a Week 1 learning project: the goal is to go from understanding DPO/GRPO
 conceptually to being able to run both methods, end-to-end, on a small model —
 not to produce a novel research result. See [`CLAUDE.md`](./CLAUDE.md) for the
-full project spec and day-by-day plan.
+full project spec and day-by-day plan, and [`PLAN.md`](./PLAN.md) for a
+live, checkbox-tracked progress log.
+
+**Working agreement:** before implementing any day's code, we first write a
+background-knowledge + implementation-plan + relevant-papers document, then
+implement against it. See `notes/` for the docs produced so far.
 
 ## Model and dataset
 
@@ -54,6 +59,7 @@ small-model-preference-optimization/
 ├── results/            # experiment outputs (config.json, metrics.json, notes.md)
 ├── notes/              # conceptual notes (policy gradient, PPO)
 │   └── papers/         # paper summaries (DPO, GRPO)
+├── PLAN.md             # day-by-day progress checklist
 └── requirements.txt
 ```
 
@@ -69,6 +75,19 @@ python scripts/smoke_test_dpo.py   # tiny DPO smoke test (1-5 steps)
 python scripts/smoke_test_grpo.py  # tiny GRPO smoke test (1-5 steps)
 ```
 
+## Background reading
+
+Written before implementing the corresponding training code — background
+knowledge, an implementation plan, and relevant papers for each topic:
+
+- [`notes/policy_gradient.md`](./notes/policy_gradient.md) — RL vocabulary
+  (policy/action/reward/advantage), the policy gradient theorem, and why
+  baselines reduce variance
+- [`notes/ppo.md`](./notes/ppo.md) — the PPO clipped objective, the full
+  PPO-for-RLHF architecture, and what DPO/GRPO each remove from it
+- [`notes/papers/dpo.md`](./notes/papers/dpo.md) — the DPO loss derivation
+  and why it needs no reward model or RL loop
+
 ## Principles
 
 - **Clarity over abstraction.** This is a research project; avoid premature
@@ -82,5 +101,15 @@ python scripts/smoke_test_grpo.py  # tiny GRPO smoke test (1-5 steps)
 
 ## Status
 
-Week 1, Day 1 — environment and repository setup. See `CLAUDE.md` for the
-full task breakdown and success criteria.
+Week 1, Day 3 of 7 complete:
+
+- [x] Day 1 — environment set up, dependencies installed, MPS verified, Qwen loads
+- [x] Day 2 — policy gradient / PPO background notes
+- [x] Day 3 — DPO paper notes
+- [ ] Day 4 — GRPO paper notes
+- [ ] Day 5 — evaluation pipeline (model/dataset smoke scripts, answer extraction, binary reward)
+- [ ] Day 6 — tiny DPO smoke test
+- [ ] Day 7 — tiny GRPO smoke test
+
+See [`PLAN.md`](./PLAN.md) for the detailed, per-day checklist and file log,
+and `CLAUDE.md` for the full task spec and success criteria.
