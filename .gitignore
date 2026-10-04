@@ -1,0 +1,42 @@
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Experiment tracking
+wandb/
+
+# Hugging Face cache (models/datasets should not live in the repo)
+.cache/
+huggingface_cache/
+
+# Large artifacts
+*.bin
+*.safetensors
+*.pt
+*.ckpt
+checkpoints/
+
+# Data / notebooks checkpoints
+data/*
+!data/.gitkeep
+.ipynb_checkpoints/
+
+# OS cruft
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Env files
+.env

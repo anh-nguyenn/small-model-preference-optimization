@@ -1,0 +1,11 @@
+torch
+transformers
+datasets
+accelerate
+trl
+peft
+evaluate
+wandb
+matplotlib
+pandas
+pytest
