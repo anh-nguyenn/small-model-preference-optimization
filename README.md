@@ -87,6 +87,8 @@ knowledge, an implementation plan, and relevant papers for each topic:
   PPO-for-RLHF architecture, and what DPO/GRPO each remove from it
 - [`notes/papers/dpo.md`](./notes/papers/dpo.md) — the DPO loss derivation
   and why it needs no reward model or RL loop
+- [`notes/papers/grpo.md`](./notes/papers/grpo.md) — the group-relative
+  advantage derivation, and how GRPO compares to both PPO and DPO
 
 ## Principles
 
@@ -101,12 +103,12 @@ knowledge, an implementation plan, and relevant papers for each topic:
 
 ## Status
 
-Week 1, Day 3 of 7 complete:
+Week 1, Day 4 of 7 complete:
 
 - [x] Day 1 — environment set up, dependencies installed, MPS verified, Qwen loads
 - [x] Day 2 — policy gradient / PPO background notes
 - [x] Day 3 — DPO paper notes
-- [ ] Day 4 — GRPO paper notes
+- [x] Day 4 — GRPO paper notes
 - [ ] Day 5 — evaluation pipeline (model/dataset smoke scripts, answer extraction, binary reward)
 - [ ] Day 6 — tiny DPO smoke test
 - [ ] Day 7 — tiny GRPO smoke test

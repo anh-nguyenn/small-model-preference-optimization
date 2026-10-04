@@ -67,15 +67,20 @@ Day 3's only deliverable per spec *is* documentation — no separate code step.
 
 ---
 
-## Day 4 — GRPO ⬜ Not started
+## Day 4 — GRPO ✅ Complete
 
-- [ ] Documentation pass: background knowledge + implementation plan +
-      relevant papers (before any code)
-- [ ] `notes/papers/grpo.md` covering the group-relative advantage
-      derivation and "GRPO replaces the learned critic with group
-      statistics"
+Day 4's only deliverable per spec *is* documentation — no separate code step.
 
-**Files created:** _(none yet)_
+- [x] `notes/papers/grpo.md` — the group-relative advantage derivation, the
+      full GRPO objective (PPO's clipped surrogate + group-relative
+      advantage + explicit KL penalty), a 3-way comparison table against
+      PPO and DPO (RL loop? value network? reward model?), the GRPO-vs-DPO
+      generation-cost trade-off, limitations (degenerate zero-variance
+      groups, no within-response credit assignment), the Day 7 plan, and
+      a papers table (DeepSeekMath, DeepSeek-R1, PPO, Schulman's KL note)
+
+**Files created:**
+- [x] `notes/papers/grpo.md`
 
 ---
 
@@ -124,7 +129,7 @@ Day 3's only deliverable per spec *is* documentation — no separate code step.
 - [ ] Binary correctness reward works
 - [x] DPO concepts are documented
 - [x] PPO concepts are documented
-- [ ] GRPO concepts are documented
+- [x] GRPO concepts are documented
 - [ ] Tiny DPO training reaches at least one optimization step
 - [ ] Tiny GRPO training reaches at least one optimization step, if local hardware permits
 - [ ] Configs/results are saved reproducibly
@@ -147,3 +152,5 @@ Day 3's only deliverable per spec *is* documentation — no separate code step.
 | 2 | `notes/ppo.md` | ✅ created |
 | 2 | `PLAN.md` (this file) | ✅ created |
 | 3 | `notes/papers/dpo.md` | ✅ created |
+| 3 | `README.md` | ✅ updated (progress status, notes links) |
+| 4 | `notes/papers/grpo.md` | ✅ created |
