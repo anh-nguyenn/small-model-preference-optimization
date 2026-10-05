@@ -89,6 +89,8 @@ knowledge, an implementation plan, and relevant papers for each topic:
   and why it needs no reward model or RL loop
 - [`notes/papers/grpo.md`](./notes/papers/grpo.md) — the group-relative
   advantage derivation, and how GRPO compares to both PPO and DPO
+- [`notes/evaluation_pipeline.md`](./notes/evaluation_pipeline.md) — GSM8K's
+  actual format, the answer-extraction design, and the binary reward
 
 ## Principles
 
@@ -103,13 +105,13 @@ knowledge, an implementation plan, and relevant papers for each topic:
 
 ## Status
 
-Week 1, Day 4 of 7 complete:
+Week 1, Day 5 of 7 complete:
 
 - [x] Day 1 — environment set up, dependencies installed, MPS verified, Qwen loads
 - [x] Day 2 — policy gradient / PPO background notes
 - [x] Day 3 — DPO paper notes
 - [x] Day 4 — GRPO paper notes
-- [ ] Day 5 — evaluation pipeline (model/dataset smoke scripts, answer extraction, binary reward)
+- [x] Day 5 — evaluation pipeline (model/dataset smoke scripts, answer extraction, binary reward — 12/12 tests passing)
 - [ ] Day 6 — tiny DPO smoke test
 - [ ] Day 7 — tiny GRPO smoke test
 

@@ -84,7 +84,7 @@ Day 4's only deliverable per spec *is* documentation — no separate code step.
 
 ---
 
-## Day 5 — Build Evaluation Pipeline 🟡 In progress (doc done, code not started)
+## Day 5 — Build Evaluation Pipeline ✅ Complete
 
 - [x] Documentation pass: `notes/evaluation_pipeline.md` — GSM8K format
       background (incl. the `#### N` marker and `<<...>>` calculator
@@ -93,14 +93,30 @@ Day 4's only deliverable per spec *is* documentation — no separate code step.
       float-equality comparison rules, a file-by-file implementation plan
       with draft code and an 8-case test table, and a references section
       (GSM8K paper, HF `transformers`/`datasets` docs)
-- [ ] `scripts/test_model.py` — load Qwen, send a prompt, print generation
-- [ ] `scripts/test_dataset.py` — load GSM8K, print 10 sample Q/A pairs
-- [ ] `src/evaluation/answer_extraction.py` — `extract_answer(text) -> str | None`
-- [ ] Unit tests for answer extraction
-- [ ] `src/rewards/correctness.py` — deterministic binary reward
+- [x] `scripts/test_model.py` — load Qwen, apply chat template, generate
+      greedily on MPS, print response. Verified: correctly solves the
+      box-of-balls example from `CLAUDE.md` ("20 balls").
+- [x] `scripts/test_dataset.py` — load GSM8K (`main`, configurable split/n),
+      print question + raw answer + extracted ground truth for each sample.
+      Verified against real examples (e.g. "Natalia" question → `72`).
+- [x] `src/evaluation/answer_extraction.py` — `extract_answer(text) -> str | None`,
+      built TDD-style (RED confirmed via failing import, then implemented)
+- [x] Unit tests for answer extraction — 8 cases in `tests/test_answer_extraction.py`
+- [x] `src/rewards/correctness.py` — deterministic binary reward,
+      TDD-style, 4 cases in `tests/test_correctness.py`
+- [x] All 12 tests pass (`pytest tests/`)
+- [x] Fixed a real bug found during implementation: `apply_chat_template`
+      returns a `BatchEncoding` (not a bare tensor) on transformers 5.18.0
+      — documented in `notes/evaluation_pipeline.md` §8, not silently patched
 
 **Files created:**
-- [x] `notes/evaluation_pipeline.md`
+- [x] `notes/evaluation_pipeline.md` (doc, then updated post-implementation with §8 notes)
+- [x] `src/evaluation/answer_extraction.py`
+- [x] `src/rewards/correctness.py`
+- [x] `tests/test_answer_extraction.py`
+- [x] `tests/test_correctness.py`
+- [x] `scripts/test_model.py`
+- [x] `scripts/test_dataset.py`
 
 ---
 
@@ -130,9 +146,9 @@ Day 4's only deliverable per spec *is* documentation — no separate code step.
 
 - [x] Research repository is clean and reproducible
 - [x] Qwen2.5-0.5B runs locally
-- [ ] GSM8K loads correctly
-- [ ] Automatic answer extraction works
-- [ ] Binary correctness reward works
+- [x] GSM8K loads correctly
+- [x] Automatic answer extraction works
+- [x] Binary correctness reward works
 - [x] DPO concepts are documented
 - [x] PPO concepts are documented
 - [x] GRPO concepts are documented
@@ -160,4 +176,10 @@ Day 4's only deliverable per spec *is* documentation — no separate code step.
 | 3 | `notes/papers/dpo.md` | ✅ created |
 | 3 | `README.md` | ✅ updated (progress status, notes links) |
 | 4 | `notes/papers/grpo.md` | ✅ created |
-| 5 | `notes/evaluation_pipeline.md` | ✅ created (doc only — Day 5 code not started) |
+| 5 | `notes/evaluation_pipeline.md` | ✅ created, then updated with post-implementation notes |
+| 5 | `src/evaluation/answer_extraction.py` | ✅ created |
+| 5 | `src/rewards/correctness.py` | ✅ created |
+| 5 | `tests/test_answer_extraction.py` | ✅ created (8 tests) |
+| 5 | `tests/test_correctness.py` | ✅ created (4 tests) |
+| 5 | `scripts/test_model.py` | ✅ created |
+| 5 | `scripts/test_dataset.py` | ✅ created |

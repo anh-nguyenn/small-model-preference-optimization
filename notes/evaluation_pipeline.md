@@ -274,15 +274,44 @@ why this note lives at `notes/evaluation_pipeline.md` rather than under
 
 - Should the fallback "last number in text" heuristic (§3.2) be restricted
   to integers/decimals only, or could it ever accidentally match something
-  like a step number ("Step 2: ...")? Worth checking once real Qwen2.5-0.5B
-  generations are seen in Day 5 implementation — if it misfires, document
-  the fix rather than silently patching the regex.
+  like a step number ("Step 2: ...")? Not hit in practice on real
+  Qwen2.5-0.5B output or the 8-case test suite — left as-is; revisit if a
+  future smoke test shows a misfire, with the fix documented there rather
+  than silently patched here.
 - `compute_reward`'s numeric-equality comparison (§3.4) treats `"20"` and
   `"20.0"` as equal — is there any GSM8K case where the *format* of the
   answer (not just its value) should matter? Current assumption: no, GSM8K
   answers are single numeric quantities, format shouldn't matter — flagging
   this assumption explicitly rather than leaving it implicit.
-- `scripts/test_model.py`'s use of `apply_chat_template` assumes a system/
-  user turn structure; need to confirm Qwen2.5-0.5B-Instruct's tokenizer
-  ships a chat template by default (expected, since it's published as an
-  "-Instruct" checkpoint, but worth a sanity check at implementation time).
+
+---
+
+## 8. Implementation notes (written after implementing)
+
+What actually happened, vs. the plan in §4 — kept here rather than quietly
+edited into the "plan" sections above, per `CLAUDE.md` principle #3.
+
+- **`apply_chat_template` returns a `BatchEncoding`, not a bare tensor, on
+  transformers 5.18.0.** The §4.4 draft assumed `apply_chat_template(...,
+  return_tensors="pt")` returns an `input_ids` tensor directly (true in
+  older transformers versions). On the installed version it returns a dict
+  (`{"input_ids": ..., "attention_mask": ...}`), which broke
+  `model.generate(input_ids, ...)` with a confusing `AttributeError:
+  'shape'` (the dict itself is handed to `generate` where a tensor is
+  expected). Fixed by passing `return_dict=True` explicitly and unpacking
+  with `model.generate(**inputs, ...)`. Documented here since it's exactly
+  the kind of version-specific API surprise a future reader (or re-run on
+  a different transformers version) should be able to find explained,
+  not just silently patched.
+- **Qwen2.5-0.5B-Instruct does ship a chat template** (resolving the §7
+  open question above) — `apply_chat_template` worked without any extra
+  configuration, and the model correctly solved the box-of-balls example
+  prompt from `CLAUDE.md` end to end on MPS, producing "20" as the final
+  answer.
+- **The fallback regex heuristic (§3.2) was not triggered** on either the
+  8 unit-test cases or real GSM8K ground-truth / model-output text seen
+  during manual verification — the `####` marker and `"answer is"` phrase
+  covered every case encountered so far.
+- **Final test count: 12** (8 for `extract_answer`, 4 for `compute_reward`),
+  all passing — see `tests/test_answer_extraction.py` and
+  `tests/test_correctness.py`.
