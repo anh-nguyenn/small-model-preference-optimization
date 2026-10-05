@@ -213,3 +213,4 @@ Day 4's only deliverable per spec *is* documentation — no separate code step.
 | 6 | `scripts/smoke_test_dpo.py` | ✅ created |
 | 6 | `results/dpo_smoke_001/config.json`, `metrics.json`, `notes.md` | ✅ created |
 | 6 | `.gitignore` | ✅ updated (exclude `results/*/` checkpoint artifacts) |
+| 6 | `PLAYGROUND.md` | ✅ created (hands-on guide to run/tweak every file so far) |

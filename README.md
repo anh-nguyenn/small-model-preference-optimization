@@ -7,8 +7,9 @@ language model, using GSM8K-style reasoning tasks as the test bed.
 This is a Week 1 learning project: the goal is to go from understanding DPO/GRPO
 conceptually to being able to run both methods, end-to-end, on a small model —
 not to produce a novel research result. See [`CLAUDE.md`](./CLAUDE.md) for the
-full project spec and day-by-day plan, and [`PLAN.md`](./PLAN.md) for a
-live, checkbox-tracked progress log.
+full project spec and day-by-day plan, [`PLAN.md`](./PLAN.md) for a
+live, checkbox-tracked progress log, and [`PLAYGROUND.md`](./PLAYGROUND.md)
+for a hands-on, run-this-yourself guide to every file written so far.
 
 **Working agreement:** before implementing any day's code, we first write a
 background-knowledge + implementation-plan + relevant-papers document, then
