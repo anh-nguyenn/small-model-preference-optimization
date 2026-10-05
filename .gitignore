@@ -26,6 +26,18 @@ huggingface_cache/
 *.ckpt
 checkpoints/
 
+# Experiment checkpoints saved under results/<run>/ (CLAUDE.md: "Do not
+# commit large checkpoints to Git"). Only config.json/metrics.json/notes.md
+# per run are tracked -- everything a trainer.save_model() call writes
+# alongside them (adapter weights, full tokenizer copy, training_args.bin,
+# auto-generated README) stays local.
+results/*/adapter_*
+results/*/tokenizer*
+results/*/chat_template.jinja
+results/*/training_args.bin
+results/*/README.md
+results/*/*.safetensors
+
 # Data / notebooks checkpoints
 data/*
 !data/.gitkeep

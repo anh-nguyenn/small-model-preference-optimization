@@ -91,6 +91,9 @@ knowledge, an implementation plan, and relevant papers for each topic:
   advantage derivation, and how GRPO compares to both PPO and DPO
 - [`notes/evaluation_pipeline.md`](./notes/evaluation_pipeline.md) — GSM8K's
   actual format, the answer-extraction design, and the binary reward
+- [`notes/dpo_smoke_test.md`](./notes/dpo_smoke_test.md) — the synthetic
+  preference-pair construction and TRL `DPOTrainer`/LoRA setup, verified
+  against the installed TRL source
 
 ## Principles
 
@@ -105,14 +108,14 @@ knowledge, an implementation plan, and relevant papers for each topic:
 
 ## Status
 
-Week 1, Day 5 of 7 complete:
+Week 1, Day 6 of 7 complete:
 
 - [x] Day 1 — environment set up, dependencies installed, MPS verified, Qwen loads
 - [x] Day 2 — policy gradient / PPO background notes
 - [x] Day 3 — DPO paper notes
 - [x] Day 4 — GRPO paper notes
 - [x] Day 5 — evaluation pipeline (model/dataset smoke scripts, answer extraction, binary reward — 12/12 tests passing)
-- [ ] Day 6 — tiny DPO smoke test
+- [x] Day 6 — tiny DPO smoke test (LoRA + TRL `DPOTrainer`, 3 steps on MPS, checkpoint saved — 17/17 tests passing)
 - [ ] Day 7 — tiny GRPO smoke test
 
 See [`PLAN.md`](./PLAN.md) for the detailed, per-day checklist and file log,

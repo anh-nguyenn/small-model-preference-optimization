@@ -120,14 +120,38 @@ Day 4's only deliverable per spec *is* documentation — no separate code step.
 
 ---
 
-## Day 6 — Tiny DPO Smoke Test ⬜ Not started
+## Day 6 — Tiny DPO Smoke Test ✅ Complete
 
-- [ ] Documentation pass: background knowledge + implementation plan +
-      relevant papers (before any code)
-- [ ] `scripts/smoke_test_dpo.py` — TRL `DPOTrainer`, 10–50 examples,
-      1–5 optimization steps, checkpoint saved
+- [x] Documentation pass: `notes/dpo_smoke_test.md` — synthetic GSM8K
+      preference-pair construction (chosen/rejected differ only in the
+      final number), TRL `DPOTrainer`/`DPOConfig` API verified directly
+      against the installed `trl==1.14.1` source (not guessed), the LoRA
+      paper, and all 3 pre-implementation open questions resolved
+- [x] `src/datasets/dpo_preference.py` — `build_dpo_preference_dataset()`,
+      TDD-style, 5 unit tests in `tests/test_dpo_preference.py`
+- [x] `scripts/smoke_test_dpo.py` — TRL `DPOTrainer` + LoRA (`peft_config`
+      passed directly, `ref_model=None` → adapter-disabling, no second
+      model copy), 20 preference examples, 3 optimization steps
+- [x] Run verified: all 8 Day 6 success criteria met (model/dataset load,
+      trainer initializes, forward/backward pass work, loss finite,
+      3 steps completed, checkpoint saved) — ran on MPS in ~29s, no
+      hardware issues
+- [x] `results/dpo_smoke_001/{config.json,metrics.json,notes.md}` written
+      per the `CLAUDE.md` Result Storage convention; `.gitignore` extended
+      so the LoRA adapter / tokenizer copy / training_args.bin stay local
+- [x] All 17 project tests pass (`pytest tests/`)
 
-**Files created:** _(none yet)_
+**Files created:**
+- [x] `notes/dpo_smoke_test.md` (doc, then updated with §7 post-implementation notes)
+- [x] `src/datasets/dpo_preference.py`
+- [x] `tests/test_dpo_preference.py`
+- [x] `scripts/smoke_test_dpo.py`
+- [x] `results/dpo_smoke_001/config.json`
+- [x] `results/dpo_smoke_001/metrics.json`
+- [x] `results/dpo_smoke_001/notes.md`
+
+**Files modified:**
+- [x] `.gitignore` — exclude generated checkpoint artifacts under `results/*/`
 
 ---
 
@@ -152,7 +176,7 @@ Day 4's only deliverable per spec *is* documentation — no separate code step.
 - [x] DPO concepts are documented
 - [x] PPO concepts are documented
 - [x] GRPO concepts are documented
-- [ ] Tiny DPO training reaches at least one optimization step
+- [x] Tiny DPO training reaches at least one optimization step
 - [ ] Tiny GRPO training reaches at least one optimization step, if local hardware permits
 - [ ] Configs/results are saved reproducibly
 - [x] Code is committed to Git
@@ -183,3 +207,9 @@ Day 4's only deliverable per spec *is* documentation — no separate code step.
 | 5 | `tests/test_correctness.py` | ✅ created (4 tests) |
 | 5 | `scripts/test_model.py` | ✅ created |
 | 5 | `scripts/test_dataset.py` | ✅ created |
+| 6 | `notes/dpo_smoke_test.md` | ✅ created, then updated with post-implementation notes |
+| 6 | `src/datasets/dpo_preference.py` | ✅ created |
+| 6 | `tests/test_dpo_preference.py` | ✅ created (5 tests) |
+| 6 | `scripts/smoke_test_dpo.py` | ✅ created |
+| 6 | `results/dpo_smoke_001/config.json`, `metrics.json`, `notes.md` | ✅ created |
+| 6 | `.gitignore` | ✅ updated (exclude `results/*/` checkpoint artifacts) |
