@@ -95,6 +95,9 @@ knowledge, an implementation plan, and relevant papers for each topic:
 - [`notes/dpo_smoke_test.md`](./notes/dpo_smoke_test.md) — the synthetic
   preference-pair construction and TRL `DPOTrainer`/LoRA setup, verified
   against the installed TRL source
+- [`notes/grpo_smoke_test.md`](./notes/grpo_smoke_test.md) — TRL
+  `GRPOTrainer`/LoRA setup, two library defaults that diverge from the
+  paper, and a real `eos_token_id` bug found and fixed during implementation
 
 ## Principles
 
@@ -109,7 +112,7 @@ knowledge, an implementation plan, and relevant papers for each topic:
 
 ## Status
 
-Week 1, Day 6 of 7 complete:
+**Week 1 complete (7/7 days).**
 
 - [x] Day 1 — environment set up, dependencies installed, MPS verified, Qwen loads
 - [x] Day 2 — policy gradient / PPO background notes
@@ -117,7 +120,10 @@ Week 1, Day 6 of 7 complete:
 - [x] Day 4 — GRPO paper notes
 - [x] Day 5 — evaluation pipeline (model/dataset smoke scripts, answer extraction, binary reward — 12/12 tests passing)
 - [x] Day 6 — tiny DPO smoke test (LoRA + TRL `DPOTrainer`, 3 steps on MPS, checkpoint saved — 17/17 tests passing)
-- [ ] Day 7 — tiny GRPO smoke test
+- [x] Day 7 — tiny GRPO smoke test (LoRA + TRL `GRPOTrainer`, group size 4, 3 steps on MPS — 22/22 tests passing; a real `eos_token_id` bug was found and fixed mid-implementation, see `notes/grpo_smoke_test.md` §7)
+
+All `CLAUDE.md` Week 1 success criteria are met. See `PLAN.md` for the full
+checklist and file-by-file history.
 
 See [`PLAN.md`](./PLAN.md) for the detailed, per-day checklist and file log,
 and `CLAUDE.md` for the full task spec and success criteria.

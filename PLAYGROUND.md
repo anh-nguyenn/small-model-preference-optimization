@@ -21,7 +21,9 @@ source .venv/bin/activate
 | 3 | `src/evaluation/answer_extraction.py` | Pull the final number out of text | No — pure Python |
 | 4 | `src/rewards/correctness.py` | Binary correct/incorrect reward | No — pure Python |
 | 5 | `src/datasets/dpo_preference.py` | Build (chosen, rejected) pairs | Yes (downloads dataset) |
-| 6 | `scripts/smoke_test_dpo.py` | Full DPO training loop | Yes (heaviest — ~30s) |
+| 6 | `scripts/smoke_test_dpo.py` | Full DPO training loop | Yes (~30s) |
+| 7 | `src/datasets/grpo_prompts.py` + `gsm8k_grpo_reward` | Build GRPO's (prompt, answer) data + its reward wrapper | Partial (prompts need network, reward math doesn't) |
+| 8 | `scripts/smoke_test_grpo.py` | Full GRPO training loop | Yes (heaviest — ~70s) |
 
 Steps 3–4 have zero network/model dependency and run in milliseconds —
 they're the best files to actually edit and re-run while you're learning,
@@ -244,11 +246,110 @@ installed library's actual source, not assumed).
 
 ---
 
+## Step 7 — `src/datasets/grpo_prompts.py` and `gsm8k_grpo_reward`
+
+**What it does:** GRPO needs much less pre-built data than DPO — just the
+question and the raw ground truth. The model generates its own responses
+live during training, so there's no chosen/rejected text to construct.
+
+```bash
+python -m pytest tests/test_grpo_prompts.py tests/test_grpo_reward.py -v
+```
+
+**Play with it directly** — build one row, then compute a group-relative
+advantage by hand exactly the way `notes/papers/grpo.md` §4 describes it:
+
+```bash
+python3 -c "
+from src.datasets.grpo_prompts import build_grpo_prompt_dataset
+row = build_grpo_prompt_dataset(n_examples=1)[0]
+print('PROMPT:', row['prompt'])
+print('ANSWER:', row['answer'])
+"
+
+python3 -c "
+from src.rewards.correctness import gsm8k_grpo_reward
+rewards = gsm8k_grpo_reward(
+    prompts=['Q\n'] * 4,
+    completions=[
+        'Therefore, the answer is 72.',
+        'Therefore, the answer is 72.',
+        'Therefore, the answer is 71.',
+        'Therefore, the answer is 72.',
+    ],
+    answer=['#### 72'] * 4,
+)
+print('rewards:', rewards)
+mean = sum(rewards) / len(rewards)
+std = (sum((r - mean) ** 2 for r in rewards) / len(rewards)) ** 0.5
+print('group mean:', mean, 'group std:', std)
+print('advantages:', [(r - mean) / (std + 1e-4) for r in rewards])
+"
+```
+
+The three correct completions should get a positive advantage, the one
+wrong completion a large negative one — this is the exact calculation
+TRL's `GRPOTrainer` runs internally once per training step, just done by
+hand here on made-up completions instead of the model's real generations.
+
+**Background:** `notes/grpo_smoke_test.md` §3.1 explains the specific
+`prompts=/completions=/answer=` keyword-argument shape TRL requires —
+confirmed by reading the installed trainer's source, not guessed.
+
+---
+
+## Step 8 — `scripts/smoke_test_grpo.py`
+
+**What it does:** the full GRPO loop — for each prompt, sample a *group*
+of responses from the current policy, score each one (Step 7), compute
+the group-relative advantage, backprop, update.
+
+```bash
+python scripts/smoke_test_grpo.py
+```
+
+Takes about 70 seconds on Apple Silicon MPS. Watch for:
+
+```text
+Trainable (LoRA) parameters: 540,672
+...
+Per-step mean rewards: [0.75, 0.75, 1.0]
+Per-step reward std (group-relative spread): [0.5, 0.5, 0.0]
+...
+Day 7 success criteria:
+  [x] model loads
+  ...
+```
+
+**Try tweaking:**
+- `--num-generations 8` — bigger group size (TRL's own default); compare
+  how much more stable `reward_std` looks with more samples per group
+- `--beta 0.0` — this is TRL's *actual* library default (no KL penalty at
+  all); compare `kl` in the printed logs against the default `--beta 0.04`
+  run — does turning it off change anything observable at this tiny scale?
+- `--n-examples 20 --max-steps 5` — push toward the top of `CLAUDE.md`'s
+  smoke-test range
+- After a run, open `results/grpo_smoke_001/notes.md` — it documents a
+  real bug (dead reward signal, found and fixed mid-implementation) that's
+  worth reading even if you never hit it yourself, since it's the kind of
+  failure that looks like success unless you check the actual reward
+  numbers rather than just "did it crash"
+
+**Background:** `notes/grpo_smoke_test.md` §7 has the full investigation —
+a completion that correctly produced `\boxed{72}.` but kept generating past
+it because the trainer's `eos_token_id` didn't recognize the model's
+actual stop token. Worth reading in full if you want to see what "debug by
+inspecting actual token ids instead of guessing" looks like in practice.
+
+---
+
 ## If something looks wrong
 
 Check the relevant note's "Implementation notes" / "§8" / "§7"
 post-implementation section first — several real issues hit during
 development are documented there rather than silently patched
 (`notes/evaluation_pipeline.md` §8 has the `apply_chat_template` surprise,
-`notes/dpo_smoke_test.md` §7 has the DPO-specific findings). If what
-you're seeing isn't covered there, it's a new finding worth adding.
+`notes/dpo_smoke_test.md` §7 has the DPO-specific findings,
+`notes/grpo_smoke_test.md` §7 has the `eos_token_id` bug that caused a
+dead reward signal). If what you're seeing isn't covered there, it's a
+new finding worth adding.

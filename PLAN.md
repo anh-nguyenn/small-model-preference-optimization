@@ -155,14 +155,51 @@ Day 4's only deliverable per spec *is* documentation — no separate code step.
 
 ---
 
-## Day 7 — Tiny GRPO Smoke Test ⬜ Not started
+## Day 7 — Tiny GRPO Smoke Test ✅ Complete
 
-- [ ] Documentation pass: background knowledge + implementation plan +
-      relevant papers (before any code)
-- [ ] `scripts/smoke_test_grpo.py` — TRL `GRPOTrainer`, small group size,
-      binary correctness reward, very few steps
+- [x] Documentation pass: `notes/grpo_smoke_test.md` — the `(prompt,
+      answer)` dataset design, TRL `GRPOTrainer`/`GRPOConfig` API verified
+      directly against the installed `trl==1.14.1` source (reward
+      function signature, no `ref_model` param, two library defaults that
+      silently diverge from the paper's formulation, the zero-variance
+      epsilon, the batch-size/group-size divisibility constraint), and
+      all open questions resolved
+- [x] `src/datasets/grpo_prompts.py` — `build_grpo_prompt_dataset()`,
+      TDD-style, 3 unit tests
+- [x] `src/rewards/correctness.py` extended with `gsm8k_grpo_reward()` —
+      a thin TRL-compatible adapter over the existing `compute_reward`,
+      2 unit tests
+- [x] `scripts/smoke_test_grpo.py` — TRL `GRPOTrainer` + LoRA, group size
+      4, 8 prompts, 3 steps
+- [x] **Real bug found and fixed, not just a clean first run:** the first
+      actual run completed without crashing but with a dead reward signal
+      (`reward=0.0` for every group) — root-caused by direct token-id
+      inspection to `GRPOTrainer`'s `eos_token_id` being a single token
+      the model doesn't naturally produce in non-chat prompting mode.
+      Fixed via `generation_kwargs` override. A second, unrelated fix
+      (`padding_side`) was tried first, found to be correct-but-not-
+      causal, and kept anyway rather than silently dropped. Full
+      post-mortem in `notes/grpo_smoke_test.md` §7 and
+      `results/grpo_smoke_001/notes.md`.
+- [x] Run verified after the fix: rewards `0.75, 0.75, 1.0` with genuine
+      nonzero `reward_std` (`0.5, 0.5, 0.0`) — the group-relative
+      advantage mechanism demonstrably exercised with real signal, not
+      just "ran without error." ~71s on MPS.
+- [x] `results/grpo_smoke_001/{config.json,metrics.json,notes.md}` written
+- [x] All 22 project tests pass (`pytest tests/`)
 
-**Files created:** _(none yet)_
+**Files created:**
+- [x] `notes/grpo_smoke_test.md` (doc, then updated with §7 post-implementation notes)
+- [x] `src/datasets/grpo_prompts.py`
+- [x] `tests/test_grpo_prompts.py`
+- [x] `tests/test_grpo_reward.py`
+- [x] `scripts/smoke_test_grpo.py`
+- [x] `results/grpo_smoke_001/config.json`
+- [x] `results/grpo_smoke_001/metrics.json`
+- [x] `results/grpo_smoke_001/notes.md`
+
+**Files modified:**
+- [x] `src/rewards/correctness.py` — added `gsm8k_grpo_reward()`
 
 ---
 
@@ -177,9 +214,11 @@ Day 4's only deliverable per spec *is* documentation — no separate code step.
 - [x] PPO concepts are documented
 - [x] GRPO concepts are documented
 - [x] Tiny DPO training reaches at least one optimization step
-- [ ] Tiny GRPO training reaches at least one optimization step, if local hardware permits
-- [ ] Configs/results are saved reproducibly
+- [x] Tiny GRPO training reaches at least one optimization step, if local hardware permits
+- [x] Configs/results are saved reproducibly
 - [x] Code is committed to Git
+
+**All Week 1 success criteria complete.**
 
 ---
 
@@ -214,3 +253,10 @@ Day 4's only deliverable per spec *is* documentation — no separate code step.
 | 6 | `results/dpo_smoke_001/config.json`, `metrics.json`, `notes.md` | ✅ created |
 | 6 | `.gitignore` | ✅ updated (exclude `results/*/` checkpoint artifacts) |
 | 6 | `PLAYGROUND.md` | ✅ created (hands-on guide to run/tweak every file so far) |
+| 7 | `notes/grpo_smoke_test.md` | ✅ created, then updated with §7 post-implementation notes |
+| 7 | `src/datasets/grpo_prompts.py` | ✅ created |
+| 7 | `tests/test_grpo_prompts.py` | ✅ created (3 tests) |
+| 7 | `tests/test_grpo_reward.py` | ✅ created (2 tests) |
+| 7 | `src/rewards/correctness.py` | ✅ updated (added `gsm8k_grpo_reward()`) |
+| 7 | `scripts/smoke_test_grpo.py` | ✅ created |
+| 7 | `results/grpo_smoke_001/config.json`, `metrics.json`, `notes.md` | ✅ created |
